@@ -12,7 +12,18 @@ const PORT = process.env.PORT || 3001;
 // --- Cấu hình CORS (Quan trọng!) ---
 // Khi deploy, bạn nên chỉ cho phép domain Vercel của bạn
 // Tạm thời, chúng ta cho phép tất cả:
-app.use(cors()); 
+const allowedOrigins = ['https://diyfhub-fe.vercel.app'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Cho phép gọi không-có-origin (như Postman) hoặc từ domain của bạn
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}));
 // SAU KHI DEPLOY: Bạn nên sửa lại thành:
 // app.use(cors({ origin: 'https://ten-app-fe-cua-ban.vercel.app' }));
 
