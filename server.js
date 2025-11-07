@@ -12,7 +12,18 @@ const cache = new Map();
 const CACHE_DURATION = 15 * 60 * 1000; 
 // -------------------------
 
-app.use(cors());
+// CORS configuration - Allow requests from Vercel frontend
+app.use(cors({
+    origin: [
+        'http://localhost:5173',
+        'http://localhost:3000',
+        'https://diyfhub-fe.vercel.app',
+        'https://*.vercel.app'
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // --- Endpoint 1: Lấy phim mới (ĐÃ CÓ CACHING) ---
 app.get('/api/phim-moi', async (req, res) => {
